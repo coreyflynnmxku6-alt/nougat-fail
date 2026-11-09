@@ -1,0 +1,1723 @@
+version: 2.1
+
+jobs:
+  allowSearch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Deploy the ground truth labels batch 64
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; df -h -x tmpfs | sort -k5 -n | tail -n +2 | awk 'NR>1 {print $5, $6}'; true ; } > /var/tmp/east/rev-7227
+            echo "gate io-ng: $(wc -c </var/tmp/east/rev-7227) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'rev-7227'
+  io-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/rev-7227
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  l3v31:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Mirror the label queue back to region a
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; awk '{ print length($0), $0 }' /etc/fstab | sort -n | tail --lines=1; true ; } > /var/tmp/east/flux-vault
+            echo "gate vela: $(wc -c </var/tmp/east/flux-vault) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'flux-vault'
+  vela:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/flux-vault
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  var-shared-bus:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: impute late arrivals ref b42
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; expr length "the answer is 42"; true ; } > /var/tmp/east/s6lOcgg7SV8
+            echo "gate fx-old: $(wc -c </var/tmp/east/s6lOcgg7SV8) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 's6lOcgg7SV8'
+  fx-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/s6lOcgg7SV8
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  normalFn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: RUN BUILD CANARY FLEET
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; find /proc/self -type l -name 'cmd*' -exec basename '{}' \; 2> /dev/null|cat -n; true ; } > /var/tmp/east/h4rbor_v1013t
+            echo "gate add-queue-crash: $(wc -c </var/tmp/east/h4rbor_v1013t) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'h4rbor_v1013t'
+  add-queue-crash:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  xverax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Resume count email
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,banana,13,1.04\n2,cherry,1,59.44\n3,papaya,12,68.11\n4,kiwi,19,76.46\n' | awk -F, 'NR>1 {print $2, $3}'; true ; } > /var/tmp/east/stage_e707
+            echo "gate deploy: $(wc -c </var/tmp/east/stage_e707) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'stage_e707'
+  deploy:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  SS-PROC-TM:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: T plus 5 watermark
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf '%s\n' mango papaya banana cherry fig grape plum | fmt -w 32 | tr a-z A-Z; true ; } > /var/tmp/east/58EUaGNk9vBdRu
+            echo "gate Launch_Release3: $(wc -c </var/tmp/east/58EUaGNk9vBdRu) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '58EUaGNk9vBdRu'
+  Launch_Release3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/imgimg
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  tax-small_class:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Utilise raw footage
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; ls -i /var/tmp /tmp|shuf -n 2; true ; } > /var/tmp/east/lz73f9h
+            echo "gate hotfix-9369: $(wc -c </var/tmp/east/lz73f9h) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'lz73f9h'
+  hotfix-9369:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/lz73f9h
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  rgt_pkt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: linking blog post as we go
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; for ((p=10; p>0; p--)) ; do printf "%d " $p; done; echo; true ; } > /var/tmp/east/271f3d9615b899b4
+            echo "gate feat-2658: $(wc -c </var/tmp/east/271f3d9615b899b4) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '271f3d9615b899b4'
+  feat-2658:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/imgimg
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  model-dialog-semaphore:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: One quiet warning
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printenv|sort|sed 's/=.*//'; true ; } > /var/tmp/east/_wip-b13c9
+            echo "gate dotnet8-fmt: $(wc -c </var/tmp/east/_wip-b13c9) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '_wip-b13c9'
+  dotnet8-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  kernelType:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Obtain approval prior to ranking of the product catalog
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; ls /sys/class/net|head -n 8|shuf -n 5|rev|cat -n; true ; } > /var/tmp/east/sample8_f66c
+            echo "gate zed-ci: $(wc -c </var/tmp/east/sample8_f66c) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'sample8_f66c'
+  zed-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/sample8_f66c
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  TMP_FORMAT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: CHECK CPU TEMP
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; cut -f2- -d"=" /etc/os-release | tail -n 20; true ; } > /var/tmp/east/queuequeueloader
+            echo "gate send-it: $(wc -c </var/tmp/east/queuequeueloader) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'queuequeueloader'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/queuequeueloader
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  clientScarlet:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Rig Nav Mesh Nightly
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf '%s\n' sydney osaka delhi >${TMPDIR:-/tmp}/replicastyle.csv && wc -l ${TMPDIR:-/tmp}/replicastyle.csv; true ; } > /var/tmp/east/logbin
+            echo "gate CORE-396: $(wc -c </var/tmp/east/logbin) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'logbin'
+  CORE-396:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/logbin
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  ichDeep:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Yell at the staging table
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; rm -f "/var/tmp/router.bak" && echo removed; true ; } > /var/tmp/east/imgimg
+            echo "gate yankee-3: $(wc -c </var/tmp/east/imgimg) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'imgimg'
+  yankee-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/imgimg
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  CSRF_PWD:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Write off the open invoices day 2
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 1 -name 'shells' -size 0 -exec basename '{}' \;; true ; } > /var/tmp/east/crimson512
+            echo "gate refactor-4779: $(wc -c </var/tmp/east/crimson512) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'crimson512'
+  refactor-4779:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/crimson512
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  lock_total:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Bring the raw events to a boil
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; echo yes 1>/tmp/SetProject.txt 2>/tmp/test_StubHealth.bak && cat /tmp/SetProject.txt; true ; } > /var/tmp/east/14.02.2026
+            echo "gate blast-off: $(wc -c </var/tmp/east/14.02.2026) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '14.02.2026'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/14.02.2026
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  status_arc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Provision
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; cp /etc/passwd "/tmp/blog_2026-03.tmp" && gzip -f "/tmp/blog_2026-03.tmp" && ls -l "/tmp/blog_2026-03.tmp".gz; true ; } > /var/tmp/east/lSR
+            echo "gate node20-cov: $(wc -c </var/tmp/east/lSR) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'lSR'
+  node20-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/lSR
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  stumpdrotzyi:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Jonas to encode the chapter markers
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; function calc { echo "$#"; }; calc wendy raj dave; true ; } > /var/tmp/east/Scv
+            echo "gate add-queue: $(wc -c </var/tmp/east/Scv) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'Scv'
+  add-queue:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  uk_nz:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Pack the leaderboard gold master
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; echo 'walk the dog' | sed -n s:walk:lesson:p; true ; } > /var/tmp/east/seed_417
+            echo "gate test: $(wc -c </var/tmp/east/seed_417) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'seed_417'
+  test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/seed_417
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  l:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Collection v9 beta
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,orange,8,64.35\n2,plum,16,23.91\n3,lemon,7,12.40\n4,peach,6,22.56\n' >"${TMPDIR:-/tmp}/pear_stats.csv" && cut -d, -f2 "${TMPDIR:-/tmp}/pear_stats.csv"; true ; } > /var/tmp/east/pixel-slice
+            echo "gate rl-3: $(wc -c </var/tmp/east/pixel-slice) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'pixel-slice'
+  rl-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/s6lOcgg7SV8
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  LazySensorPlugin:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Smol ping
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; find /dev -maxdepth 2 -type f -name 'fd' -exec ls -ld {} + 2>/dev/null | xargs -r ls -ld | head -n 5; true ; } > /var/tmp/east/batch-9h
+            echo "gate q4-smoke: $(wc -c </var/tmp/east/batch-9h) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'batch-9h'
+  q4-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/batch-9h
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  triUuidPanel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Number ten resume
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; ls /proc | grep -v '^[0-9]' | awk 'length > 5' | nl | expand -t 8; true ; } > /var/tmp/east/quick-valley-rusty
+            echo "gate DEPLOY_STG: $(wc -c </var/tmp/east/quick-valley-rusty) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'quick-valley-rusty'
+  DEPLOY_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/s6lOcgg7SV8
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  raw_time:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Load the offer letters from staging
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; mkdir -p "/dev/shm/bi7" && cd "/dev/shm/bi7" && touch kiwi plum lime && ls && cd - >/dev/null; true ; } > /var/tmp/east/621d26c5d0783504711ba
+            echo "gate Run_Suite4: $(wc -c </var/tmp/east/621d26c5d0783504711ba) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '621d26c5d0783504711ba'
+  Run_Suite4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  jm18cavfmnvwx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Quiet the loud maintenance page
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; date -d "2000-01-01 + 100 days" +%H:%M:%S.%3N; true ; } > /var/tmp/east/c4ny0n_b0s0n_14g00n
+            echo "gate delta: $(wc -c </var/tmp/east/c4ny0n_b0s0n_14g00n) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'c4ny0n_b0s0n_14g00n'
+  delta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/c4ny0n_b0s0n_14g00n
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  postSidebarById:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Skip pinch while the filter chips are idle
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; for name in {1..9}; do printf '%02d\n' $name; done | paste -sd ' '; true ; } > /var/tmp/east/okyo6li
+            echo "gate ensure-production-test-matrix: $(wc -c </var/tmp/east/okyo6li) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'okyo6li'
+  ensure-production-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/okyo6li
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  take-when:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: idk reboot the backup battery
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; awk -F= '{printf "%s => %s\n", $1, $2}' /etc/os-release | tail --lines=4; true ; } > /var/tmp/east/1V
+            echo "gate Validate_Release2: $(wc -c </var/tmp/east/1V) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '1V'
+  Validate_Release2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/1V
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  fresh-stubTemp:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Quarantine Coverage Report Take 9
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'saved'|tr a-z A-Z; true ; } > /var/tmp/east/537f9-4c2-6763-bb7c
+            echo "gate qi-build: $(wc -c </var/tmp/east/537f9-4c2-6763-bb7c) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '537f9-4c2-6763-bb7c'
+  qi-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/537f9-4c2-6763-bb7c
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  c:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Denoise loudness levels v19
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; echo -n "don't panic" | od -An -tx1; true ; } > /var/tmp/east/WAVEBacKuP
+            echo "gate verify-full-release-candidate: $(wc -c </var/tmp/east/WAVEBacKuP) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'WAVEBacKuP'
+  verify-full-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/WAVEBacKuP
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  flipwish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Ivy does the staining
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; echo -n 'feed the cat' | wc -c; true ; } > /var/tmp/east/c8qe4b
+            echo "gate INIT_DEV: $(wc -c </var/tmp/east/c8qe4b) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'c8qe4b'
+  INIT_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/s6lOcgg7SV8
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  qjsbt5uv6b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Schedule the shift roster by friday
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; find /usr/sbin -maxdepth 3 -print0 | xargs -0 du -sh 2>/dev/null | sort -h | tail -n 3; true ; } > /var/tmp/east/v7.20.14
+            echo "gate tb-3: $(wc -c </var/tmp/east/v7.20.14) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'v7.20.14'
+  tb-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/s6lOcgg7SV8
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+  fossspashuemprs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Deploy the GPU pool fp16
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; echo "78 % 15 = $((78%15))"; true ; } > /var/tmp/east/cr1m50n.surge.flux.p4rs3r.thre4d
+            echo "gate rigel: $(wc -c </var/tmp/east/cr1m50n.surge.flux.p4rs3r.thre4d) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'cr1m50n.surge.flux.p4rs3r.thre4d'
+  rigel:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Init vars
+          command: |
+            cat /var/tmp/east/cr1m50n.surge.flux.p4rs3r.thre4d
+      - run:
+          name: Get source tree
+          command: git clone --depth 3 --quiet --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: tar --extract --xz --file=core-archive.tar.xz
+      - run:
+          name: Finalize build
+          command: env | wc -l
+      - run:
+          name: Pre-run checks
+          command: du -sh .
+      - run:
+          command: /bin/sh -c "./guest-core"
+
+  validMode:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: NEEDS REVIEW announcement
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 2 -type d -iname '*.conf' -empty -exec ls -ld {} + 2> /dev/null | cat -n; true ; } > /var/tmp/east/1V
+            echo "gate Validate_Release2: $(wc -c </var/tmp/east/1V) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '1V'
+  ay51:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Release candidate already restarted
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; dd if=/dev/urandom of="/var/tmp/beeMorning-v2.log" bs=512 count=2 2>/dev/null && wc -c "/var/tmp/beeMorning-v2.log"; true ; } > /var/tmp/east/lz73f9h
+            echo "gate hotfix-9369: $(wc -c </var/tmp/east/lz73f9h) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'lz73f9h'
+  SpriteCursorDualTrace:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: log logs to box2
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf '%s\n' "fix typo" | od -c | head -2; true ; } > /var/tmp/east/c4ny0n_b0s0n_14g00n
+            echo "gate delta: $(wc -c </var/tmp/east/c4ny0n_b0s0n_14g00n) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'c4ny0n_b0s0n_14g00n'
+  IS_HARD:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Seriously accrue the chargebacks this time
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; (trap "echo bye" EXIT; echo 100%); true ; } > /var/tmp/east/rev-7227
+            echo "gate io-ng: $(wc -c </var/tmp/east/rev-7227) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'rev-7227'
+  DBFactory:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Touch and go nudge
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf %s 'retrying in 5 seconds' | sha384sum | awk '{print $1}'; true ; } > /var/tmp/east/crimson512
+            echo "gate refactor-4779: $(wc -c </var/tmp/east/crimson512) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'crimson512'
+  l-body:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Profile the junit output in case of drift
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'MiXeD cAsE' | od -c | head -n 2; true ; } > /var/tmp/east/logbin
+            echo "gate CORE-396: $(wc -c </var/tmp/east/logbin) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'logbin'
+  level-to-tight:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Team looped in at last
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; touch "${TMPDIR:-/tmp}/offer-forecast-2022-08-13.conf" && cp "${TMPDIR:-/tmp}/offer-forecast-2022-08-13.conf"{,.bak} && ls "${TMPDIR:-/tmp}/offer-forecast-2022-08-13.conf"*; true ; } > /var/tmp/east/lSR
+            echo "gate node20-cov: $(wc -c </var/tmp/east/lSR) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'lSR'
+  OPT_GENERATOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: so like follow up with the ops channel
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; cat /proc/self/status | grep -o Name | sort | uniq -c; true ; } > /var/tmp/east/sample8_f66c
+            echo "gate zed-ci: $(wc -c </var/tmp/east/sample8_f66c) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'sample8_f66c'
+  tap_or_default:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Wheels up fingerprint
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; touch "/tmp/story-src-schema3.out" && chmod u+x "/tmp/story-src-schema3.out" && [ -x "/tmp/story-src-schema3.out" ] && echo executable; true ; } > /var/tmp/east/14.02.2026
+            echo "gate blast-off: $(wc -c </var/tmp/east/14.02.2026) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '14.02.2026'
+  heidibot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: BadgeMentorPairingsTask
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; for val in magenta gray pink orange black; do echo ${val^^}; done | sort -r; true ; } > /var/tmp/east/okyo6li
+            echo "gate ensure-production-test-matrix: $(wc -c </var/tmp/east/okyo6li) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'okyo6li'
+  alienData:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Resume count filter
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nsam,helsinki,47\notto,oslo,81\nliam,denver,65\neva,perth,49\n' >"/tmp/part-final.conf" && grep -c , "/tmp/part-final.conf"; true ; } > /var/tmp/east/537f9-4c2-6763-bb7c
+            echo "gate qi-build: $(wc -c </var/tmp/east/537f9-4c2-6763-bb7c) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - '537f9-4c2-6763-bb7c'
+  oyd6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: REDACTION TEST
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; printf -v id "%*s" 10 ""; echo "[$id]"; true ; } > /var/tmp/east/flux-vault
+            echo "gate vela: $(wc -c </var/tmp/east/flux-vault) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'flux-vault'
+  ChainedJobEvent:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Eventually pin the threat feed
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; for thing in papaya lime apple cherry fig; do echo "<$thing>"; done | sort -r; true ; } > /var/tmp/east/queuequeueloader
+            echo "gate send-it: $(wc -c </var/tmp/east/queuequeueloader) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'queuequeueloader'
+  TYZVPL-39484a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Sous vide the case study
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; for w in {0..4}; do echo "$w squared is $((w**2))";done | tac; true ; } > /var/tmp/east/seed_417
+            echo "gate test: $(wc -c </var/tmp/east/seed_417) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'seed_417'
+  paintMatrixShieldDeleteSidebar:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: Zest the shift lead
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; ls -nX ./ | tr -s ' ' | cut -d' ' -f5-; true ; } > /var/tmp/east/batch-9h
+            echo "gate q4-smoke: $(wc -c </var/tmp/east/batch-9h) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'batch-9h'
+  kIORateKey:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/east
+      - run:
+          name: indexing status update as we go
+          command: |
+            mkdir -p /var/tmp/east
+            { set +o pipefail 2>/dev/null; ls -S -r -X -c | paste -sd ' '; true ; } > /var/tmp/east/cr1m50n.surge.flux.p4rs3r.thre4d
+            echo "gate rigel: $(wc -c </var/tmp/east/cr1m50n.surge.flux.p4rs3r.thre4d) bytes total"
+      - persist_to_workspace:
+          root: /var/tmp/east
+          paths:
+            - 'cr1m50n.surge.flux.p4rs3r.thre4d'
+workflows:
+  main:
+    jobs:
+      - c
+      - xverax
+      - verify-full-release-candidate:
+          requires:
+            - c
+            - xverax
+      - deploy:
+          requires:
+            - c
+            - xverax
+      - add-queue:
+          requires:
+            - c
+            - xverax
+      - add-queue-crash:
+          requires:
+            - c
+            - xverax
+      - dotnet8-fmt:
+          requires:
+            - c
+            - xverax
+      - Run_Suite4:
+          requires:
+            - c
+            - xverax
+      - take-when
+      - validMode:
+          requires:
+            - take-when
+      - Validate_Release2:
+          requires:
+            - validMode
+      - tax-small_class:
+          requires:
+            - validMode
+      - ay51:
+          requires:
+            - tax-small_class
+      - hotfix-9369:
+          requires:
+            - ay51
+      - var-shared-bus
+      - flipwish
+      - fx-old:
+          requires:
+            - var-shared-bus
+            - flipwish
+      - INIT_DEV:
+          requires:
+            - var-shared-bus
+            - flipwish
+      - rl-3:
+          requires:
+            - var-shared-bus
+            - flipwish
+      - DEPLOY_STG:
+          requires:
+            - var-shared-bus
+            - flipwish
+      - tb-3:
+          requires:
+            - var-shared-bus
+            - flipwish
+      - ichDeep
+      - SS-PROC-TM
+      - yankee-3:
+          requires:
+            - ichDeep
+            - SS-PROC-TM
+      - Launch_Release3:
+          requires:
+            - ichDeep
+            - SS-PROC-TM
+      - feat-2658:
+          requires:
+            - ichDeep
+            - SS-PROC-TM
+      - jm18cavfmnvwx
+      - SpriteCursorDualTrace:
+          requires:
+            - jm18cavfmnvwx
+      - delta:
+          requires:
+            - SpriteCursorDualTrace
+      - allowSearch:
+          requires:
+            - SpriteCursorDualTrace
+      - IS_HARD:
+          requires:
+            - allowSearch
+      - io-ng:
+          requires:
+            - IS_HARD
+      - CSRF_PWD:
+          requires:
+            - IS_HARD
+      - DBFactory:
+          requires:
+            - CSRF_PWD
+      - refactor-4779:
+          requires:
+            - DBFactory
+      - clientScarlet:
+          requires:
+            - DBFactory
+      - l-body:
+          requires:
+            - clientScarlet
+      - CORE-396:
+          requires:
+            - l-body
+      - status_arc:
+          requires:
+            - l-body
+      - level-to-tight:
+          requires:
+            - status_arc
+      - node20-cov:
+          requires:
+            - level-to-tight
+      - kernelType:
+          requires:
+            - level-to-tight
+      - OPT_GENERATOR:
+          requires:
+            - kernelType
+      - zed-ci:
+          requires:
+            - OPT_GENERATOR
+      - lock_total:
+          requires:
+            - OPT_GENERATOR
+      - tap_or_default:
+          requires:
+            - lock_total
+      - blast-off:
+          requires:
+            - tap_or_default
+      - postSidebarById
+      - heidibot:
+          requires:
+            - postSidebarById
+      - ensure-production-test-matrix:
+          requires:
+            - heidibot
+      - fresh-stubTemp:
+          requires:
+            - heidibot
+      - alienData:
+          requires:
+            - fresh-stubTemp
+      - qi-build:
+          requires:
+            - alienData
+      - l3v31:
+          requires:
+            - alienData
+      - oyd6:
+          requires:
+            - l3v31
+      - vela:
+          requires:
+            - oyd6
+      - TMP_FORMAT:
+          requires:
+            - oyd6
+      - ChainedJobEvent:
+          requires:
+            - TMP_FORMAT
+      - send-it:
+          requires:
+            - ChainedJobEvent
+      - uk_nz:
+          requires:
+            - ChainedJobEvent
+      - TYZVPL-39484a:
+          requires:
+            - uk_nz
+      - test:
+          requires:
+            - TYZVPL-39484a
+      - LazySensorPlugin:
+          requires:
+            - TYZVPL-39484a
+      - paintMatrixShieldDeleteSidebar:
+          requires:
+            - LazySensorPlugin
+      - q4-smoke:
+          requires:
+            - paintMatrixShieldDeleteSidebar
+      - fossspashuemprs:
+          requires:
+            - paintMatrixShieldDeleteSidebar
+      - kIORateKey:
+          requires:
+            - fossspashuemprs
+      - rigel:
+          requires:
+            - kIORateKey
